@@ -1,9 +1,11 @@
 {{template "base" .}}
 
-{{define "main"}}
-    <h1>Socialist</h1>
-    <a href="logout"><button>Logout</button></a>
+{{define "header"}}
+    <h1>User</h1>
+{{end}}
 
+
+{{define "main"}}
     <p>Hi 👋</p>
     <p>I'm {{.Name}} {{.Surname}} from {{.City}}.</p>
     <p>I'm {{.Age}} and I like {{.Interests}}.</p>

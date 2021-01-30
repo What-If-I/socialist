@@ -1,11 +1,11 @@
 {{template "base" .}}
 
+
+{{define "header"}}
+    <h1>Users</h1>
+{{end}}
+
 {{define "main"}}
-    <h1>Socialist</h1>
-    <a href="/"><button>Index</button></a>
-    <a href="users"><button>Users</button></a>
-    <a href="friends"><button>Friends</button></a>
-    <a href="logout"><button>Logout</button></a>
 
     {{ range .}}
         <p>

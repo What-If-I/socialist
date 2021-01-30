@@ -1,13 +1,21 @@
 {{template "base" .}}
 
-{{define "main"}}
-    <h1>Welcome to Socialist</h1>
-    <form action="login" method="post">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password">
+{{define "header"}}
+    <h1>Welcome to socialist!</h1>
+    <h2>Login</h2>
+{{end}}
 
-        <input type="submit" value="Submit">
-    </form>
+{{define "main"}}
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <form action="login" method="post" class="pure-form">
+            <fieldset>
+                <label for="username"></label>
+                <input type="text" id="username" name="username" placeholder="Email">
+                <label for="password"></label>
+                <input type="password" id="password" name="password" placeholder="Password">
+
+                <button type="submit" class="pure-button pure-button-primary">Sign in</button>
+            </fieldset>
+        </form>
+    </div>
 {{end}}
