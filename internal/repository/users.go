@@ -79,7 +79,7 @@ func (u userRepo) GetProfile(userID int) (Profile, error) {
     	LEFT JOIN friends f ON profile.user_id = f.friend_id AND f.user_id = ?
         WHERE profile.user_id = ?
     	`, userID, userID)
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		return profile, fmt.Errorf("query get profile: %w", err)
 	}
 
