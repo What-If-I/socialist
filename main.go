@@ -19,8 +19,9 @@ import (
 )
 
 type conf struct {
-	DbDsn  string `env:"DB_DSN"`
-	Secret string `env:"SECRET"`
+	DbDsn      string `env:"DB_DSN"`
+	Secret     string `env:"SECRET"`
+	ServerAddr string `env:"SERVER_ADDR" default:":80"`
 }
 
 func main() {
@@ -63,8 +64,8 @@ func main() {
 
 	r.Get("/static/*", http.FileServer(http.Dir("./resources/")).ServeHTTP)
 
-	fmt.Println("listening on: http://localhost:80")
-	if err := http.ListenAndServe(":80", r); err != nil {
+	fmt.Printf("listening on: http://%s\n", cfg.ServerAddr)
+	if err := http.ListenAndServe(cfg.ServerAddr, r); err != nil {
 		panic(err)
 	}
 }
