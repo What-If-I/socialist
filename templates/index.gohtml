@@ -1,0 +1,13 @@
+{{template "base" .}}
+
+{{define "main"}}
+    <h1>Socialist</h1>
+    <a href="/"><button>Index</button></a>
+    <a href="users"><button>Users</button></a>
+    <a href="friends"><button>Friends</button></a>
+    <a href="logout"><button>Logout</button></a>
+
+    <p>Hello {{.Name}} {{.Surname}} ({{.Gender}}) from {{.City}}!</p>
+    <p>Your are {{.Age}} and you like {{.Interests}}</p>
+    <p><a href="/fill-form"><button>Edit my info</button></a></p>
+{{end}}

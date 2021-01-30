@@ -1,0 +1,24 @@
+{{template "base" .}}
+
+{{define "main"}}
+    <h1>Socialist</h1>
+    <a href="/"><button>Index</button></a>
+    <a href="users"><button>Users</button></a>
+    <a href="friends"><button>Friends</button></a>
+    <a href="logout"><button>Logout</button></a>
+
+    {{ range .}}
+        <p>
+            <a href="user/{{.ID}}">{{.Name}} - {{.Surname}}</a>
+            {{if .IsFriend}}
+                <form action="friend-remove/{{.ID}}" method="post">
+                    <input type="submit" value="Remove Friend ❌">
+                </form>
+            {{else}}
+                <form action="friend-add/{{.ID}}" method="post">
+                    <input type="submit" value="Add Friend ✅">
+                </form>
+            {{end}}
+        </p>
+    {{end}}
+{{end}}

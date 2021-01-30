@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8
+    volumes:
+      - ./.db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: social
+      MYSQL_DATABASE: social
+      MYSQL_USER: social
+      MYSQL_PASSWORD: social
+    ports:
+      - '3306:3306'
