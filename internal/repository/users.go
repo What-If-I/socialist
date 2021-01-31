@@ -103,7 +103,35 @@ func (u userRepo) ListBrief(userID int) ([]ProfileBrief, error) {
 		FROM profile 
     	LEFT JOIN friends f ON profile.user_id = f.friend_id AND f.user_id = ?
 	    WHERE profile.user_id != ?
+        ORDER BY profile.user_id DESC
     	`, userID, userID)
+	if err != nil {
+		return nil, fmt.Errorf("query list profiles: %w", err)
+	}
+
+	return profiles, nil
+}
+
+func (u userRepo) Search(userID int, name, surname string) ([]ProfileBrief, error) {
+	var profiles []ProfileBrief
+	args := []interface{}{userID, userID}
+	query := `
+		SELECT profile.user_id AS id, name, surname, IFNULL(NOT NOT f.friend_id, FALSE) AS is_friend
+		FROM profile 
+    	LEFT JOIN friends f ON profile.user_id = f.friend_id AND f.user_id = ?
+	    WHERE profile.user_id != ?
+    `
+	if name != "" {
+		query += " AND name LIKE ?"
+		args = append(args, name+"%")
+	}
+	if surname != "" {
+		query += " AND surname LIKE ?"
+		args = append(args, surname+"%")
+	}
+	query += "\n ORDER BY profile.user_id DESC"
+
+	err := u.db.Select(&profiles, query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("query list profiles: %w", err)
 	}

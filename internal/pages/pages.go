@@ -39,6 +39,14 @@ func decodeForm(dst interface{}, r *http.Request) error {
 	return nil
 }
 
+func decodeQuery(dst interface{}, r *http.Request) error {
+	if err := decoder.Decode(dst, r.URL.Query()); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (h *Handlers) PlainPage(tmplName string) func(w http.ResponseWriter, r *http.Request) {
 	if _, ok := h.tmpl[tmplName]; !ok {
 		panic(fmt.Sprintf("template '%s' doesn't exist", tmplName))
