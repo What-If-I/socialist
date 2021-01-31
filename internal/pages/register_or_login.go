@@ -1,7 +1,6 @@
 package pages
 
 import (
-	"fmt"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -34,7 +33,8 @@ func (h *Handlers) RegisterOrLogin(w http.ResponseWriter, r *http.Request) {
 
 	var form loginForm
 	if err := decodeForm(&form, r); err != nil {
-		fmt.Print(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	usr, err := h.repo.User.LoginUser(form.Name)
@@ -48,8 +48,7 @@ func (h *Handlers) RegisterOrLogin(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	} else {
-		pwdHash := hashAndSalt(form.Password)
-		id, err := h.repo.User.CreateUser(form.Name, pwdHash)
+		id, err := h.repo.User.CreateUser(form.Name, hashAndSalt(form.Password))
 		if err != nil {
 			panic(err)
 		}

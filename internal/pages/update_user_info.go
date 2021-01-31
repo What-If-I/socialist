@@ -1,7 +1,6 @@
 package pages
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -24,7 +23,8 @@ func (h *Handlers) UpdateUserInfo(w http.ResponseWriter, r *http.Request) {
 
 	var form userInfo
 	if err := decodeForm(&form, r); err != nil {
-		fmt.Print(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	userID, err := strconv.Atoi(h.session.GetUserID(r))
