@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -46,7 +47,7 @@ func main() {
 	loginGuard := myMiddleware.LoginOnly(sessionStorage)
 
 	r := chi.NewRouter()
-	r.Use(middleware.Logger, middleware.CleanPath)
+	r.Use(middleware.Logger, middleware.Recoverer, middleware.CleanPath, middleware.Timeout(10*time.Second))
 
 	r.Get("/", h.Index)
 	r.Post("/login", h.RegisterOrLogin)
@@ -69,6 +70,7 @@ func main() {
 		panic(err)
 	}
 }
+
 func loadTemplates(templatesDir string) map[string]*template.Template {
 	layouts, err := filepath.Glob(templatesDir + "layouts/*.gohtml")
 	if err != nil {
