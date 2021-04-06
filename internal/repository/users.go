@@ -105,6 +105,7 @@ func (u userRepo) ListBrief(userID int) ([]ProfileBrief, error) {
     	LEFT JOIN friends f ON profile.user_id = f.friend_id AND f.user_id = ?
 	    WHERE profile.user_id != ?
         ORDER BY profile.user_id DESC
+		LIMIT 150
     	`, userID, userID)
 	if err != nil {
 		return nil, fmt.Errorf("query list profiles: %w", err)
