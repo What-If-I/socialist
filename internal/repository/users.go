@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 
@@ -112,7 +113,7 @@ func (u userRepo) ListBrief(userID int) ([]ProfileBrief, error) {
 	return profiles, nil
 }
 
-func (u userRepo) Search(userID int, name, surname string) ([]ProfileBrief, error) {
+func (u userRepo) Search(ctx context.Context, userID int, name, surname string) ([]ProfileBrief, error) {
 	var profiles []ProfileBrief
 	args := []interface{}{userID, userID}
 	query := `
@@ -131,7 +132,7 @@ func (u userRepo) Search(userID int, name, surname string) ([]ProfileBrief, erro
 	}
 	query += "\n ORDER BY profile.user_id DESC"
 
-	err := u.db.Select(&profiles, query, args...)
+	err := u.db.SelectContext(ctx, &profiles, query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("query list profiles: %w", err)
 	}

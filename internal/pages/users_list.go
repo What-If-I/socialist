@@ -1,6 +1,7 @@
 package pages
 
 import (
+	"net"
 	"net/http"
 	"strconv"
 	"strings"
@@ -27,7 +28,7 @@ func (h *Handlers) ListUsers(w http.ResponseWriter, r *http.Request) {
 
 	var users []repository.ProfileBrief
 	if nameQ != "" {
-		users, err = h.repo.User.Search(idUser, nameQ, surnameQ)
+		users, err = h.repo.User.Search(r.Context(), idUser, nameQ, surnameQ)
 	} else {
 		users, err = h.repo.User.ListBrief(idUser)
 		if err != nil {
@@ -44,6 +45,9 @@ func (h *Handlers) ListUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.tmpl["users"].Execute(w, ctx); err != nil {
+		if _, ok := err.(*net.OpError); ok {
+			return
+		}
 		panic(err)
 	}
 }
